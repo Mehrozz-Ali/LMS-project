@@ -9,7 +9,7 @@ import path from 'path';
 import sendMail from "../utilis/sendMail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utilis/jwt";
 import { redis } from "../utilis/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById } from "../services/user.service";
 import cloudinary from 'cloudinary';
 
 // register user
@@ -420,6 +420,19 @@ export const updateUserProfilePicture = CatchAsyncError(async (req: Request, res
     }
 })
 
+
+
+
+
+// get all users --- only for admin
+export const getAllUsers = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await getAllUsersService(res);
+
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+})
 
 
 

@@ -2,13 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 import { CatchAsyncError } from '../middleware/catchAsyncErrors';
 import ErrorHandler from '../utilis/ErrorHandler';
 import cloudinary from 'cloudinary';
-import { createCourse } from '../services/course.service';
+import { createCourse, getAllCoursesService } from '../services/course.service';
 import CourseModel from '../models/course.model';
 import { redis } from '../utilis/redis';
 import mongoose from 'mongoose';
 import ejs from 'ejs';
 import path from 'node:path';
 import sendMail from '../utilis/sendMail';
+import NotificationModel from '../models/notification.model';
 
 
 
@@ -175,7 +176,6 @@ interface IAddQuestion {
     contentId: string,
 }
 
-
 export const addQuestion = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
 
@@ -203,6 +203,12 @@ export const addQuestion = CatchAsyncError(async (req: Request, res: Response, n
 
         // add this question to the course content 
         courseContent.questions.push(newQuestion);
+
+        await NotificationModel.create({
+            userId: req.user?._id?.toString(),
+            title: "New Question Received",
+            message: `You have a new question in ${courseContent.title} `
+        });
 
 
         // save the updated course
@@ -269,6 +275,13 @@ export const addAnswer = CatchAsyncError(async (req: Request, res: Response, nex
 
         if (req.user?._id === question.user._id) {
             // create a notification 
+
+            await NotificationModel.create({
+                userId: req.user?._id.toString(),
+                title: "New Question Reply received",
+                message: `You have a new reply to your question in ${courseContent.title}`
+
+            })
         } else {
             const data = {
                 name: question.user.name,
@@ -425,6 +438,16 @@ export const addReplyToReview = CatchAsyncError(async (req: Request, res: Respon
 
 
 
+
+// get all courses --- only for admin
+export const getAllCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await getAllCoursesService(res);
+
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+})
 
 
 
