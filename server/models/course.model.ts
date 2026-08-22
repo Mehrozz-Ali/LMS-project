@@ -156,7 +156,7 @@ const courseSchema = new Schema<ICourse>({
         default: 0,
     }
 
-})
+}, { timestamps: true })
 
 
 
