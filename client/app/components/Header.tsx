@@ -3,15 +3,23 @@ import React, { FC, useState } from 'react';
 import Link from 'next/link';
 import NavItems from '../utils/NavItems';
 import { ThemeSwitcher } from '../utils/ThemeSwitcher';
-import { HiOutlineMenuAlt3, HiOutlineUserCircle } from 'react-icons/hi'
+import { HiOutlineMenuAlt3, HiOutlineUserCircle } from 'react-icons/hi';
+import CustomeModel from '../utils/CustomeModel';
+import Login from '../components/Auth/Login';
+import SignUp from '../components/Auth/SignUp';
+import Verification from '../components/Auth/Verification';
+
+
 
 type Props = {
     open: boolean;
     setOpen: (open: boolean) => void;
     activeItem: number;
+    route: string;
+    setRoute: (route: string) => void;
 }
 
-const Header: FC<Props> = ({ activeItem, setOpen }) => {
+const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
     const [active, setActive] = useState(false);
     const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -77,6 +85,47 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
                 }
 
             </div>
+
+            {
+                route === "Login" && (
+                    <>
+                        {
+                            open && (
+                                <CustomeModel open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} component={Login} />
+                            )
+                        }
+                    </>
+                )
+            }
+
+
+            {/* sign Up */}
+            {
+                route === "Sign-Up" && (
+                    <>
+                        {
+                            open && (
+                                <CustomeModel open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} component={SignUp} />
+                            )
+                        }
+                    </>
+                )
+            }
+
+            {/* verification */}
+            {
+                route === "Verification" && (
+                    <>
+                        {
+                            open && (
+                                <CustomeModel open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} component={Verification} />
+                            )
+                        }
+                    </>
+                )
+            }
+
+
         </div >
     )
 }

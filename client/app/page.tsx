@@ -13,10 +13,12 @@ const Page: FC<Props> = (props) => {
 
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
+  const [route, setRoute] = useState("Login");
+
   return (
     <div>
       <Heading title="E-Learning" description="ELearning is a platform for online learning" keywords="Programming,MERN,Redux " />
-      <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+      <Header open={open} setOpen={setOpen} activeItem={activeItem} route={route} setRoute={setRoute} />
       <Hero />
     </div>
   )
