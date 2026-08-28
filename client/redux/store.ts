@@ -13,3 +13,15 @@ export const store = configureStore({
     devTools: false,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 })
+
+
+
+// call the refersh token function on every page load 
+const initializeApp = async () => {
+    await store.dispatch(apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true }));
+    await store.dispatch(apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true }));
+}
+
+
+
+initializeApp();
