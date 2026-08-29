@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import avatar from '../../public/assests/avatar.jpg';
 import { useSession } from 'next-auth/react';
-import { useSocialAuthMutation } from '@/redux/features/auth/authApi';
+import { useLogOutQuery, useSocialAuthMutation } from '@/redux/features/auth/authApi';
 import toast from 'react-hot-toast';
 
 
@@ -31,6 +31,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
     const { user } = useSelector((state: any) => state.auth);
     const { data } = useSession();
     const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+    const [logout, setLogout] = useState(false);
+    const { } = useLogOutQuery(undefined, {
+        skip: !logout ? true : false,
+    })
 
 
     useEffect(() => {
@@ -43,8 +47,13 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
                 });
             }
         }
-        if (isSuccess) {
-            toast.success("Login successful!");
+        if (data === null) {
+            if (isSuccess) {
+                toast.success("Login successful!");
+            }
+        }
+        if (data === null) {
+            setLogout(true);
         }
     }, [data, user])
 
@@ -93,7 +102,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
                             {
                                 user ? (
                                     <Link href={"/profile"}>
-                                        <Image src={user.avatar ? user.avatar : avatar} alt="" className="w-[30px] h-[30px] rounded-full cursor-pointer" />
+                                        <Image src={user.avatar ? user.avatar.url : avatar} alt="" width={30} height={30} className="w-[30px] h-[30px] rounded-full cursor-pointer" style={{ border: activeItem === 5 ? "2px solid #37a39a" : "none" }} />
                                     </Link>
                                 ) : (
                                     <HiOutlineUserCircle size={25} className="hidden md:block cursor-pointer dark:text-white text-black" onClick={() => setOpen(true)} />
