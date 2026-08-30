@@ -18,7 +18,7 @@ const page: FC<Props> = (props) => {
     return (
         <div>
             <Protected>
-                <Heading title={`${user?.name}'s Profile`} description="ELearning is a platform for online learning" keywords="Programming,MERN,Redux " />
+                <Heading title={`${user?.name}'s Profile-ELearning`} description="ELearning is a platform for online learning" keywords="Programming,MERN,Redux " />
                 <Header open={open} setOpen={setOpen} activeItem={activeItem} route={route} setRoute={setRoute} />
 
                 <Profile user={user} />
