@@ -17,31 +17,12 @@ const Profile: FC<Props> = ({ user }) => {
     const [active, setActive] = useState(1);
     const [logOut, { isLoading }] = useLogOutMutation();
 
-    // useLogOutQuery(undefined, {
-    //     skip: !logout,
-    // });
 
 
     const logOutHandler = async () => {
         await logOut(undefined);
         await signOut();
     };
-
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         if (window.scrollY > 85) {
-    //             setScroll(true);
-    //         } else {
-    //             setScroll(false);
-    //         }
-    //     };
-
-    //     window.addEventListener("scroll", handleScroll);
-
-    //     return () => {
-    //         window.removeEventListener("scroll", handleScroll);
-    //     };
-    // }, []);
 
 
     if (typeof window !== "undefined") {
