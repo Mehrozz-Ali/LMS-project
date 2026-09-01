@@ -10,6 +10,7 @@ import ejs from 'ejs';
 import path from 'node:path';
 import sendMail from '../utilis/sendMail';
 import NotificationModel from '../models/notification.model';
+import axios from 'axios';
 
 
 
@@ -91,7 +92,7 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
         } else {
             const course = await CourseModel.findById(req.params.id).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
 
-            await redis.set(courseId, JSON.stringify(course),"EX", 604800); // data will expire after 7 days from redis 
+            await redis.set(courseId, JSON.stringify(course), "EX", 604800); // data will expire after 7 days from redis 
 
             res.status(200).json({
                 success: true,
@@ -479,6 +480,32 @@ export const deleteCourse = CatchAsyncError(async (req: Request<IParams>, res: R
 
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
+    }
+})
+
+
+
+
+
+// generate video url 
+export const generateVideoUrl = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { videoId } = req.body;
+        const response = await axios.post(
+            `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+            { ttl: 300 },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`
+                },
+            }
+        )
+        res.json(response.data);
+
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
     }
 })
 

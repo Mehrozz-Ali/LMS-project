@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import CourseInformation from './CourseInformation';
 import CourseOptions from './CourseOptions';
 import CourseData from './CourseData';
+import CourseContent from './CourseContent';
+import CoursePreview from './CoursePreview';
 
 type Props = {}
 
@@ -38,6 +40,50 @@ const CreateCourse = (props: Props) => {
     ])
     const [courseData, setCourseData] = useState({});
 
+    const handleSubmit = async () => {
+        // format benefits array
+        const formattedBenefits = benefits.map((benefit) => ({ title: benefit.title }));
+        // format prerequisites
+        const formattedPrerequisites = prerequisites.map((prerequisite) => ({ title: prerequisite.title }));
+
+
+        // Format course content
+        const formattedCourseContentData = courseContentData.map((courseContent) => ({
+            videoUrl: courseContent.videoUrl,
+            title: courseContent.title,
+            description: courseContent.description,
+            videoSection: courseContent.VideoSection,
+            links: courseContent.links.map((link) => ({
+                title: link.title,
+                url: link.url
+            })),
+            suggestion: courseContent.suggestion
+        }));
+
+        // prepare our data obbject 
+        const data = {
+            name: courseInfo.name,
+            description: courseInfo.description,
+            price: courseInfo.price,
+            estimatedPrice: courseInfo.estimatedPrice,
+            tags: courseInfo.tags,
+            thumbnail: courseInfo.thumbnail,
+            level: courseInfo.level,
+            demoUrl: courseInfo.demoUrl,
+            totalVideos: courseContentData.length,
+            benefits: formattedBenefits,
+            prerequisites: formattedPrerequisites,
+            courseContent: formattedCourseContentData,
+        };
+        setCourseData(data);
+    }
+
+    const handleCourseCreate = (e: any) => {
+        const data = courseData;
+
+    }
+
+
     return (
         <div className="w-full flex min-h-screen">
             <div className="w-[80%]">
@@ -46,6 +92,12 @@ const CreateCourse = (props: Props) => {
                 )}
                 {active === 1 && (
                     <CourseData benefits={benefits} setBenefits={setBenefits} prerequisites={prerequisites} setPrerequisites={setPrerequisites} active={active} setActive={setActive} />
+                )}
+                {active === 2 && (
+                    <CourseContent courseContentData={courseContentData} setCourseContentData={setCourseContentData} active={active} setActive={setActive} handleSubmit={handleSubmit} />
+                )}
+                {active === 3 && (
+                    <CoursePreview courseData={courseData} active={active} setActive={setActive} handleCourseCreate={handleCourseCreate} />
                 )}
             </div>
             <div className="w-[20%] mt-[100px] h-screen fixed z-[-1] top-18 right-0">
