@@ -9,18 +9,18 @@ userRouter.post('/activate-user', activationUser);
 userRouter.post('/login', loginUser);
 
 
-userRouter.get('/logout', isAuthenticated, logoutUser);
+userRouter.get('/logout', updateAccessToken, isAuthenticated, logoutUser);
 userRouter.get('/refresh', updateAccessToken);
-userRouter.get('/me', isAuthenticated, getUserInfo);
+userRouter.get('/me', updateAccessToken, isAuthenticated, getUserInfo);
 
 userRouter.post("/social-auth", socialAuth);
-userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
-userRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
-userRouter.put("/update-user-avatar", isAuthenticated, updateUserProfilePicture);
-userRouter.get("/get-users", isAuthenticated, authorizeRoles("admin"), getAllUsers);
+userRouter.put("/update-user-info", updateAccessToken, isAuthenticated, updateUserInfo);
+userRouter.put("/update-user-password", updateAccessToken, isAuthenticated, updateUserPassword);
+userRouter.put("/update-user-avatar", updateAccessToken, isAuthenticated, updateUserProfilePicture);
+userRouter.get("/get-users", updateAccessToken, isAuthenticated, authorizeRoles("admin"), getAllUsers);
 
-userRouter.put("/update-user", isAuthenticated, authorizeRoles("admin"), updateUserRole);
-userRouter.delete("/delete-user/:id", isAuthenticated, authorizeRoles("admin"), deleteUser);
+userRouter.put("/update-user", updateAccessToken, isAuthenticated, authorizeRoles("admin"), updateUserRole);
+userRouter.delete("/delete-user/:id", updateAccessToken, isAuthenticated, authorizeRoles("admin"), deleteUser);
 
 
 
