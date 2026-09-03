@@ -46,9 +46,11 @@ export const editCourse = CatchAsyncError(async (req: Request, res: Response, ne
 
         const data = req.body;
         const thumbnail = data.thumbnail;
+        const courseId = req.params.id;
+        const courseData = await CourseModel.findById(courseId) as any;
 
-        if (thumbnail) {
-            await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+        if (thumbnail && !thumbnail.startsWith("https")) {
+            await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
             const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
                 folder: "courses"
             });
@@ -59,7 +61,13 @@ export const editCourse = CatchAsyncError(async (req: Request, res: Response, ne
             }
         }
 
-        const courseId = req.params.id;
+        if (thumbnail.startsWith("https")) {
+            data.thumbnail = {
+                public_id: courseData?.thumbnail.public_id,
+                url: courseData?.thumbnail.url,
+            }
+        }
+
         const course = await CourseModel.findByIdAndUpdate(courseId,
             { $set: data },
             { new: true }
@@ -113,7 +121,7 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
 // get all courses --- without purchasing
 export const getAllCourses = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const isCacheExist = await redis.get('allCourses');
+        // const isCacheExist = await redis.get('allCourses');
 
         const courses = await CourseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
 
@@ -432,7 +440,7 @@ export const addReplyToReview = CatchAsyncError(async (req: Request, res: Respon
 
 
 // get all courses --- only for admin
-export const getAllCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+export const getAdminAllCourses = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         await getAllCoursesService(res);
 

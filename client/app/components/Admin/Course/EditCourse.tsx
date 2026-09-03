@@ -1,22 +1,30 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import CourseInformation from './CourseInformation';
 import CourseOptions from './CourseOptions';
 import CourseData from './CourseData';
 import CourseContent from './CourseContent';
 import CoursePreview from './CoursePreview';
-import { useCreateCourseMutation } from '../../../../redux/features/courses/coursesApi';
+import { useEditCourseMutation, useGetAllCoursesQuery } from '../../../../redux/features/courses/coursesApi';
 import toast from 'react-hot-toast';
-import { redirect } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 
-type Props = {}
+type Props = {
+    id: string;
+}
 
-const CreateCourse = (props: Props) => {
-    const [createCourse, { isLoading, isSuccess, error }] = useCreateCourseMutation();
+const EditCourse: FC<Props> = ({ id }) => {
+
+    const [editCourse, { isSuccess, error }] = useEditCourseMutation()
+    const { data, refetch } = useGetAllCoursesQuery({}, { refetchOnMountOrArgChange: true });
+
+
+    const editCourseData = data && data.courses.find((i: any) => i._id === id);
+
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Course created successfully");
+            toast.success("Course updated successfully");
             redirect("/admin/courses");
         }
         if (error) {
@@ -25,10 +33,34 @@ const CreateCourse = (props: Props) => {
                 toast.error(errorMessage.data.message);
             }
         }
-    }, [isSuccess, error, isLoading])
+    }, [isSuccess, error])
 
 
     const [active, setActive] = useState(0);
+
+    useEffect(() => {
+        if (editCourseData) {
+            setCourseInfo({
+                name: editCourseData.name,
+                description: editCourseData.description,
+                price: editCourseData.price,
+                estimatedPrice: editCourseData?.estimatedPrice,
+                tags: editCourseData.tags,
+                level: editCourseData.level,
+                demoUrl: editCourseData.demoUrl,
+                thumbnail: editCourseData?.thumbnail?.url,
+            })
+            setBenefits(editCourseData.benefits.map((b: any) => ({ ...b })));
+            setPrerequisites(editCourseData.prerequisites.map((p: any) => ({ ...p })));
+            setCourseContentData(editCourseData.courseData.map((c: any) => ({
+                ...c,
+                links: c.links.map((l: any) => ({ ...l })),
+            })));
+        }
+    }, [editCourseData])
+
+
+
     const [courseInfo, setCourseInfo] = useState({
         name: "",
         description: "",
@@ -38,6 +70,7 @@ const CreateCourse = (props: Props) => {
         level: "",
         demoUrl: "",
         thumbnail: "",
+
     });
 
     const [benefits, setBenefits] = useState([{ title: "" }]);
@@ -57,6 +90,8 @@ const CreateCourse = (props: Props) => {
             suggestion: "",
         }
     ])
+
+
     const [courseData, setCourseData] = useState({});
 
     const handleSubmit = async () => {
@@ -99,11 +134,8 @@ const CreateCourse = (props: Props) => {
 
     const handleCourseCreate = async (e: any) => {
         const data = courseData;
-        if (!isLoading) {
-            await createCourse(data);
-        }
+        await editCourse({ id: editCourseData._id, data });
     }
-
 
     return (
         <div className="w-full flex min-h-screen">
@@ -118,7 +150,7 @@ const CreateCourse = (props: Props) => {
                     <CourseContent courseContentData={courseContentData} setCourseContentData={setCourseContentData} active={active} setActive={setActive} handleSubmit={handleSubmit} />
                 )}
                 {active === 3 && (
-                    <CoursePreview courseData={courseData} active={active} setActive={setActive} handleCourseCreate={handleCourseCreate} />
+                    <CoursePreview courseData={courseData} active={active} setActive={setActive} handleCourseCreate={handleCourseCreate} isEdit={true} />
                 )}
             </div>
             <div className="w-[20%] mt-[100px] h-screen fixed z-[-1] top-18 right-0">
@@ -128,4 +160,4 @@ const CreateCourse = (props: Props) => {
     )
 }
 
-export default CreateCourse
+export default EditCourse;

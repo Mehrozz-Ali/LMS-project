@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, generateVideoUrl, getAllCourse, getAllCourses, getCourseByUser, getSingleCourse, uploadCourse } from '../controllers/course.controller';
+import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, generateVideoUrl, getAdminAllCourses, getAllCourses, getCourseByUser, getSingleCourse, uploadCourse } from '../controllers/course.controller';
 import { authorizeRoles, isAuthenticated } from '../middleware/auth';
 import { updateAccessToken } from '../controllers/user.controller';
 const courseRouter = express.Router();
@@ -16,7 +16,7 @@ courseRouter.put("/add-question", updateAccessToken, isAuthenticated, addQuestio
 courseRouter.put("/add-answer", updateAccessToken, isAuthenticated, addAnswer);
 courseRouter.put("/add-review/:id", updateAccessToken, isAuthenticated, addReview);
 courseRouter.put("/add-reply", updateAccessToken, isAuthenticated, authorizeRoles("admin"), addReplyToReview);
-courseRouter.get("/get-courses", isAuthenticated, authorizeRoles("admin"), getAllCourse);
+courseRouter.get("/get-admin-courses", isAuthenticated, authorizeRoles("admin"), getAdminAllCourses);
 courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
 courseRouter.delete("/delete-course/:id", updateAccessToken, isAuthenticated, authorizeRoles("admin"), deleteCourse);
 

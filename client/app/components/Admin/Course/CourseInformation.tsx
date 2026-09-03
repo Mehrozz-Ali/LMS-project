@@ -157,7 +157,13 @@ const CourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                         onDrop={handleDrop}
                     >
                         {courseInfo.thumbnail ? (
-                            <img src={courseInfo.thumbnail} alt="" className="max-h-full w-full object-cover" />
+                            <img
+                                src={
+                                    typeof courseInfo.thumbnail === "string"
+                                        ? courseInfo.thumbnail
+                                        : courseInfo.thumbnail?.url
+                                }
+                                alt="" className="max-h-full w-full object-cover" />
                         ) : (
                             <span className="text-black dark:text-white ">
                                 Drag and drop your thumbnail here or click to select a file

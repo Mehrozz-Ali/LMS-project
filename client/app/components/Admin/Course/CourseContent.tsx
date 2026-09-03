@@ -117,6 +117,8 @@ const CourseContent: FC<Props> = ({ active, setActive, courseContentData, setCou
         }
     }
 
+    console.log(courseContentData);
+
 
     return (
         <div className="w-[80%] m-auto mt-24 p-3">
@@ -124,7 +126,7 @@ const CourseContent: FC<Props> = ({ active, setActive, courseContentData, setCou
                 {courseContentData.map((item: any, index: number) => {
                     const showSectionInput = index === 0 || item.videoSection !== courseContentData[index - 1].videoSection;
                     return (
-                        <>
+                        <React.Fragment key={index}>
                             <div className={`w-full bg-[#cdc8c817] p-4 ${showSectionInput ? "mt-10" : "mb-0"}`}>
                                 {showSectionInput && (
                                     <>
@@ -224,7 +226,6 @@ const CourseContent: FC<Props> = ({ active, setActive, courseContentData, setCou
                                             <br />
                                         </div>
                                         {item?.links.map((link: any, linkIndex: number) => (
-
                                             <div className="mb-3 block">
                                                 <div className="w-full flex items-center justify-between">
                                                     <label className={`${styles.label}`}>Link {linkIndex + 1}</label>
@@ -274,7 +275,7 @@ const CourseContent: FC<Props> = ({ active, setActive, courseContentData, setCou
                                     </div>
                                 )}
                             </div>
-                        </>
+                        </React.Fragment>
                     );
                 })}
                 <br />
