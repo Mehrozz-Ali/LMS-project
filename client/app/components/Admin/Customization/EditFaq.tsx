@@ -68,8 +68,10 @@ const EditFaq = (props: Props) => {
         setQuestions([
             ...questions,
             {
+                _id: `new-${Date.now()}`,
                 question: "",
                 answer: "",
+                active: true,
             }
         ])
     };
