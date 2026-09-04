@@ -1,5 +1,6 @@
 import { styles } from '@/app/styles/style';
-import React, { FC, useState } from 'react'
+import { useGetHeroDataQuery } from '@/redux/features/layout/layoutApi';
+import React, { FC, useEffect, useState } from 'react'
 
 type Props = {
     courseInfo: any;
@@ -10,6 +11,15 @@ type Props = {
 
 const CourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive }) => {
     const [dragging, setDragging] = useState(false);
+    const { data } = useGetHeroDataQuery("Categories", {});
+    const [categories, setCategories] = useState([]);
+
+
+    useEffect(() => {
+        if (data) {
+            setCategories(data?.layout?.categories);
+        }
+    }, [data]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -103,17 +113,30 @@ const CourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                     </div>
                 </div>
                 <br />
-                <div>
-                    <label htmlFor="email" className={`${styles.label}`}>Course Tags</label>
-                    <input type="text"
-                        required
-                        name=""
-                        value={courseInfo.tags}
-                        onChange={(e: any) => setCourseInfo({ ...courseInfo, tags: e.target.value })}
-                        id="tags"
-                        placeholder="web development, react, nextjs"
-                        className={`${styles.input}`}
-                    />
+                <div className="w-full flex justify-between">
+                    <div className="w-[45%]">
+                        <label htmlFor="email" className={`${styles.label}`}>Course Tags</label>
+                        <input type="text"
+                            required
+                            name=""
+                            value={courseInfo.tags}
+                            onChange={(e: any) => setCourseInfo({ ...courseInfo, tags: e.target.value })}
+                            id="tags"
+                            placeholder="web development, react, nextjs"
+                            className={`${styles.input}`}
+                        />
+                    </div>
+                    <div className="w-[50%]">
+                        <label className={`${styles.label} w-[50%]`}>Course Categories </label>
+                        <select name="" id="" className={`${styles.input}`} value={courseInfo.category} onChange={(e: any) => setCourseInfo({ ...courseInfo, category: e.target.value })}>
+                            <option>Select Category</option>
+                            {categories.map((item: any) => (
+                                <option value={item.title} key={item._id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 <br />
                 <div className="w-full flex justify-between">
