@@ -252,13 +252,13 @@ const Sidebar = () => {
                         <Typography variant="h6" className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]" sx={{ m: "15px 0 5px 20px" }}>
                             {!isCollapsed && "Extras"}
                         </Typography>
-                        <Item
+                        {/* <Item
                             title="Settings"
                             to="/admin/settings"
                             icon={<SettingsIcon />}
                             selected={selected}
                             setSelected={setSelected}
-                        />
+                        /> */}
                         <Item
                             title="Logout"
                             to="/admin/logout"
