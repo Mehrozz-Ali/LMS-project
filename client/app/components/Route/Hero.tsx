@@ -1,3 +1,4 @@
+import { useGetHeroDataQuery } from '@/redux/features/layout/layoutApi'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { FC } from 'react'
@@ -6,18 +7,23 @@ import { BiSearch } from 'react-icons/bi'
 type Props = {}
 
 const Hero: FC<Props> = (props) => {
+
+
+    const { data, refetch } = useGetHeroDataQuery("Banner", {});
+
     return (
         <div className="w-full min-h-screen flex flex-col 1000px:flex-row items-center relative">
             {/* LEFT part */}
             <div className="1000px:w-[45%]  w-full flex 1000px:min-h-screen items-center justify-center pt-[30px] 1000px:pt-[0] pl-[20px] 1000px:pl-[40px] 1500px:pl-[60px] z-10">
 
-                {/* Image + circle share one responsive square wrapper so they always scale together */}
                 <div className="relative w-[80vw] 1000px:w-[38vw] 1500px:w-[34vw] max-w-[650px] aspect-square flex items-center justify-center">
 
                     {/* Glowing circle — fills the wrapper, so it scales 1:1 with the image at every breakpoint */}
                     <div className="absolute inset-0 rounded-full hero_animation" />
-                    <Image src={require("../../../public/assests/banner-img-1.png")}
+                    <Image src={data?.layout?.banner?.image?.url}
                         alt=""
+                        width={400}
+                        height={400}
                         className="relative object-contain w-[90%] h-[90%] z-[10]"
                     />
                 </div>
@@ -26,11 +32,11 @@ const Hero: FC<Props> = (props) => {
             {/* Right part */}
             <div className="1000px:w-[55%] flex flex-col items-center 1000px:items-start 1000px:mt-[0px] text-center 1000px:text-left mt-[80px] px-[20px] 1000px:px-[0px]">
                 <h2 className="dark:text-white text-[#000000c7] text-[30px] w-full 1000px:text-[60px] font-[600] font-Josefin py-2 1000px:leading-[70px] 1500px:w-[85%]">
-                    Improve Your Online Learning Experience Better Instantly
+                    {data?.layout?.banner?.title}
                 </h2>
                 <br />
                 <p className="dark:text-[#edfff4] text-[#000000ac] font-Josefin font-[600] text-[18px] 1500px:!w-[70%] 1100px:!w-[85%]">
-                    We have 40k+ Online courses & 500K+ Online registered student. Find your desired Courses from them.
+                    {data?.layout?.banner?.subTitle}
                 </p>
                 <br />
                 <br />
