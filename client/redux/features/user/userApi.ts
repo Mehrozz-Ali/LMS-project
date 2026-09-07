@@ -55,8 +55,8 @@ export const userApi = apiSlice.injectEndpoints({
                 credentials: "include" as const,
             })
         }),
-
-    })
+    }),
+    overrideExisting: true,
 })
 
 
