@@ -128,7 +128,7 @@ const CourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                     </div>
                     <div className="w-[50%]">
                         <label className={`${styles.label} w-[50%]`}>Course Categories </label>
-                        <select name="" id="" className={`${styles.input}`} value={courseInfo.category} onChange={(e: any) => setCourseInfo({ ...courseInfo, category: e.target.value })}>
+                        <select name="" id="" className={`${styles.input}`} value={courseInfo.categories} onChange={(e: any) => setCourseInfo({ ...courseInfo, categories: e.target.value })}>
                             <option>Select Category</option>
                             {categories.map((item: any) => (
                                 <option value={item.title} key={item._id}>

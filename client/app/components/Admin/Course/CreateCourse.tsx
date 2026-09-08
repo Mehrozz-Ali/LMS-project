@@ -60,9 +60,7 @@ const CreateCourse = (props: Props) => {
         }
     ])
 
-    console.log(courseInfo);
     const [courseData, setCourseData] = useState({});
-    console.log(courseData)
 
     const handleSubmit = async () => {
         // format benefits array
@@ -94,6 +92,7 @@ const CreateCourse = (props: Props) => {
             tags: courseInfo.tags,
             thumbnail: courseInfo.thumbnail,
             level: courseInfo.level,
+            categories: courseInfo.categories,
             demoUrl: courseInfo.demoUrl,
             totalVideos: courseContentData.length,
             benefits: formattedBenefits,

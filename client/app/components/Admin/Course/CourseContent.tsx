@@ -19,6 +19,7 @@ const CourseContent: FC<Props> = ({ active, setActive, courseContentData, setCou
     const [activeSection, setActiveSection] = useState(1);
 
 
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
     }

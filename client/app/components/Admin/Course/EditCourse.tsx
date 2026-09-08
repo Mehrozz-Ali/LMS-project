@@ -48,6 +48,8 @@ const EditCourse: FC<Props> = ({ id }) => {
                 tags: editCourseData.tags,
                 level: editCourseData.level,
                 demoUrl: editCourseData.demoUrl,
+                videoLength: editCourseData?.videoLength,
+                categories: editCourseData.categories,
                 thumbnail: editCourseData?.thumbnail?.url,
             })
             setBenefits(editCourseData.benefits.map((b: any) => ({ ...b })));
@@ -69,6 +71,8 @@ const EditCourse: FC<Props> = ({ id }) => {
         tags: "",
         level: "",
         demoUrl: "",
+        videoLength: "",
+        categories: "",
         thumbnail: "",
 
     });
@@ -81,6 +85,8 @@ const EditCourse: FC<Props> = ({ id }) => {
             title: "",
             description: "",
             videoSection: "Untitled Section",
+            videoLength: "",
+            categories: "",
             links: [
                 {
                     title: "",
@@ -107,6 +113,7 @@ const EditCourse: FC<Props> = ({ id }) => {
             title: courseContent.title,
             description: courseContent.description,
             videoSection: courseContent.videoSection,
+            videoLength: courseContent.videoLength,
             links: courseContent.links.map((link) => ({
                 title: link.title,
                 url: link.url
