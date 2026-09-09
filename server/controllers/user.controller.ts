@@ -451,6 +451,7 @@ export const updateUserRole = CatchAsyncError(async (req: Request, res: Response
         await updateUserRoleService(res, id, role);
 
 
+
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
     }
