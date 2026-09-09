@@ -24,7 +24,9 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
 
 
     const discountPercentagePrice = discountPercentage.toFixed(0);
-    const isPurchased = user && user?.courses?.find((item: any) => item._id === data._id);
+    const isPurchased = user?.courses?.some(
+        (item: any) => String(item.courseId) === String(data._id)
+    );
 
     const handleOrder = (e: any) => {
         setOpen(true);
@@ -157,7 +159,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                             </div>
                             <div className="flex items-center">
                                 {isPurchased ? (
-                                    <Link href={`/course-access/${data._id}`} className={`${styles.button} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimsone]`}>
+                                    <Link href={`/course-access/${data._id}`} className={`${styles.button} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimson]`}>
                                         Enter to course
                                     </Link>
                                 ) : (
