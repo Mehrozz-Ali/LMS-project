@@ -37,7 +37,7 @@ export const createOrder = CatchAsyncError(async (req: Request, res: Response, n
 
 
         const courseExistInUser = user?.courses.some(
-            (course: any) => course.courseId.toString() === courseId
+            (course: any) => course._id.toString() === courseId
         );
         if (courseExistInUser) {
             return next(new ErrorHandler("You already have purchased this course", 400));
@@ -88,7 +88,6 @@ export const createOrder = CatchAsyncError(async (req: Request, res: Response, n
         if (!user) {
             return next(new ErrorHandler("User not found", 400));
         }
-        // await redis.set(req.user?._id, JSON.stringify(user));
         await redis.set(req.user?._id?.toString() ?? "", JSON.stringify(user));
         await user?.save();
 
@@ -146,7 +145,7 @@ export const newPayment = CatchAsyncError(async (req: Request, res: Response, ne
             }
         });
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             client_secret: myPayment.client_secret,
         })

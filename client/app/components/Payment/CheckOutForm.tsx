@@ -24,7 +24,7 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if (!stripe || !elements || isLoading) {
+        if (!stripe || !elements) {
             return;
         }
         setIsLoading(true);
@@ -45,7 +45,6 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
     useEffect(() => {
         if (orderData) {
             setLoadUser(true);
-            setOpen(false);
             redirect(`/course-access/${data._id}`);
         }
         if (error) {
@@ -66,7 +65,6 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
                         {isLoading ? "Paying..." : "Pay now"}
                     </span>
                 </button>
-
 
                 {/* if it fail shows error and success message */}
                 {message && (
