@@ -17,6 +17,7 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
     const elements = useElements();
     const [message, setMessage] = useState<any>("");
     const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
+    const [paymentSucceeded, setPaymentSucceeded] = useState(false);
     const [loadUser, setLoadUser] = useState(false);
     const { } = useLoadUserQuery({ skip: loadUser ? false : true });
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,7 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if (!stripe || !elements) {
+        if (!stripe || !elements || paymentSucceeded) {
             return;
         }
         setIsLoading(true);
@@ -35,10 +36,26 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
         if (error) {
             setMessage(error.message);
             setIsLoading(false);
-        } else if (paymentIntent && paymentIntent.status === "succeeded") {
-            setIsLoading(false);
-            createOrder({ courseId: data._id, payment_info: paymentIntent })
         }
+        if (paymentIntent && paymentIntent.status === "succeeded") {
+            setPaymentSucceeded(true);
+            try {
+                await createOrder({ courseId: data._id, payment_info: paymentIntent }).unwrap();
+            } catch (error: any) {
+                setMessage(
+                    error?.data?.message ||
+                    "Payment succeeded but the order could not be saved. Please contact support with your payment ID: " + paymentIntent.id
+                )
+            } finally {
+                setIsLoading(false);
+            }
+        } else {
+            setIsLoading(false);
+        }
+        //         else if (paymentIntent && paymentIntent.status === "succeeded") {
+        //     setIsLoading(false);
+        //     createOrder({ courseId: data._id, payment_info: paymentIntent })
+        // }
     }
 
 
@@ -60,7 +77,7 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
             <form id="payment-form" onSubmit={handleSubmit} className="max-h-[80vh] overflow-y-scroll pr-1">
                 <LinkAuthenticationElement id="link-authentication-element" />
                 <PaymentElement id="payment-element" />
-                <button disabled={isLoading || !stripe || !elements} id="submit">
+                <button disabled={isLoading || !stripe || !elements || paymentSucceeded} id="submit">
                     <span id="button-text" className={`${styles.button} mt-2 !h-[35px]`}>
                         {isLoading ? "Paying..." : "Pay now"}
                     </span>

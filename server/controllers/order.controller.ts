@@ -80,6 +80,7 @@ export const createOrder = CatchAsyncError(async (req: Request, res: Response, n
                 })
             }
         } catch (error: any) {
+            await newOrder(data, res, next);
             return next(new ErrorHandler(error.message, 500))
         }
 
