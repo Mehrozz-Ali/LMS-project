@@ -1,18 +1,26 @@
 import { styles } from '@/app/styles/style';
 import CoursePlayer from '@/app/utils/CoursePlayer';
+import Image from 'next/image';
 import React, { useState } from 'react'
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
+import { AiFillStar, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineStar } from 'react-icons/ai';
 
 type Props = {
     data: any;
     id: string;
     activeVideo: number;
     setActiveVideo: (activeVideo: number) => void;
+    user: any;
 }
 
-const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo }: Props) => {
+const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo, user }: Props) => {
 
     const [activeBar, setactiveBar] = useState(0);
+    const [question, setQuestion] = useState("");
+    const [rating, setRating] = useState(1);
+    const [review, setReview] = useState("");
+
+
+    const isReviewExists = data?.reviews?.find((item: any) => item.user._id === user._id);
 
 
     return (
@@ -72,13 +80,96 @@ const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo }: Props) =>
                 )
             }
 
-            {
-                activeBar === 2 && (
-                    <>
+            {activeBar === 2 && (
+                <>
+                    <div className="flex w-full">
+                        <Image
+                            src={user.avatar ? user.avatar.url : "../../../public/assests/avatar.jpg"}
+                            width={50}
+                            height={50}
+                            alt="user-avatar"
+                            className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
+                        <textarea name="" id=""
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                            cols={40}
+                            rows={5}
+                            placeholder="Write your question here..."
+                            className="outline-none bg-transparent ml-3 border border-[#ffffff57] md:w-full p-2 rounded w-[90%] md:text-[18px] font-Poppins"
+                        >
+                        </textarea>
+                    </div>
+                    <div className="w-full flex justify-end">
+                        <div className={`${styles.button} !w-[120px] !h-[40px] text-[18px] mt-5`}>
+                            Submit
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        {/* question reply  */}
+                    </div>
+                </>
+            )}
 
+            {activeBar === 3 && (
+                <div className="w-full">
+                    <>
+                        {!isReviewExists && (
+                            <>
+                                <div className="flex w-full">
+                                    <Image
+                                        src={user.avatar ? user.avatar.url : "../../../public/assests/avatar.jpg"}
+                                        width={50}
+                                        height={50}
+                                        alt="user-avatar"
+                                        className="w-[50px] h-[50px] rounded-full object-cover"
+                                    />
+                                    <div className="w-full">
+                                        <h5 className="pl-3 text-[20px] font-[500] dark:text-white text-black">
+                                            Give a Rating <span className="text-red-500">*</span>
+                                        </h5>
+                                        <div className="flex w-full ml-2 pb-3">
+                                            {[1, 2, 3, 4, 5].map((i) => rating >= i ? (
+                                                <AiFillStar
+                                                    key={i}
+                                                    className="mr-1 cursor-pointer"
+                                                    color="rgb(246,186,0)"
+                                                    size={25}
+                                                    onClick={() => setRating(i)}
+                                                />
+                                            ) : (
+                                                <AiOutlineStar
+                                                    key={i}
+                                                    className="mr-1 cursor-pointer"
+                                                    color="rgb(246,186,0)"
+                                                    size={25}
+                                                    onClick={() => setRating(i)}
+                                                />
+                                            ))}
+                                        </div>
+                                        <textarea name="" id=""
+                                            value={review}
+                                            onChange={(e) => setReview(e.target.value)}
+                                            cols={40}
+                                            rows={5}
+                                            placeholder="Write your review here..."
+                                            className="outline-none bg-transparent md:ml-3 border border-[#ffffff57] w-[95%] md:w-full p-2 rounded text-[18px] font-Poppins"
+                                        >
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div className="w-full flex justify-end">
+                                    <div className={`${styles.button} !w-[120px] !h-[40px] text-[18px] mt-5 md:mr-0 mr-2 `}>
+                                        Submit
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </>
-                )
-            }
+                </div>
+            )}
         </div>
     )
 }
