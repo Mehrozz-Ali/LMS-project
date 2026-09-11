@@ -9,6 +9,7 @@ import { format } from 'timeago.js/lib/format';
 import CourseContentList from '../Course/CourseContentList';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckOutForm from '../Payment/CheckOutForm';
+import { useLoadUserQuery } from '@/redux/features/api/apiSlice'
 
 
 type Props = {
@@ -18,13 +19,14 @@ type Props = {
 }
 
 const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: userData } = useLoadUserQuery(undefined, {});
+    const user = userData?.user;
     const [open, setOpen] = useState(false);
     const discountPercentage = ((data?.estimatedPrice - data.price) / data?.estimatedPrice) * 100;
 
 
     const discountPercentagePrice = discountPercentage.toFixed(0);
-    const isPurchased = user?.courses?.some(
+    const isPurchased = user && user?.courses?.find(
         (item: any) => String(item.courseId) === String(data._id)
     );
 
