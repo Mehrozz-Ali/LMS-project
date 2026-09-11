@@ -324,7 +324,11 @@ const CommentItem = ({ setQuestionId, item, answer, setAnswer, handleAnswerSubmi
                                     <div className="pl-3">
                                         <div className="flex items-center">
                                             <h5 className="text-[20px]">{item.user.name}</h5>
-                                            <VscVerifiedFilled className="text-[#50d569] ml-2 font-[20px]"/>
+                                            {
+                                                item.user.role === "admin" && (
+                                                    <VscVerifiedFilled className="text-[#4a4ada] ml-2 font-[20px]" />
+                                                )
+                                            }
                                         </div>
                                         <p>{item.answer}</p>
                                         <small className="text-[#ffffff83]">{format(item.createdAt)}.</small>

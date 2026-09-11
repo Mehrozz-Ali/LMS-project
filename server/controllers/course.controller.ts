@@ -266,6 +266,8 @@ export const addAnswer = CatchAsyncError(async (req: Request, res: Response, nex
         const newAnswer: any = {
             user: req.user,
             answer,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
         }
 
 
@@ -418,6 +420,8 @@ export const addReplyToReview = CatchAsyncError(async (req: Request, res: Respon
         const replyData: any = {
             user: req.user,
             comment,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
         }
 
         if (!review.commentReplies) {
