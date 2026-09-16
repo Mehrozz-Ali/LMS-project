@@ -36,17 +36,6 @@ const CourseDetailsPage: FC<Props> = ({ id }) => {
     }, [config, data]);
 
 
-    // useEffect(() => {
-    //     if (config?.publishableKey) {
-    //         setStripePromise(loadStripe(config.publishableKey));
-    //     }
-
-    //     if (data?.course?.price !== undefined) {
-    //         const amount = Math.round(data.course.price * 100);
-    //         createPaymentIntent(amount);
-    //     }
-    // }, [config, data]);
-
 
     useEffect(() => {
         if (paymentIntentData) {
