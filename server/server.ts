@@ -2,13 +2,15 @@ import dns from "dns";
 import { app } from './app';
 import connectDB from './utilis/db';
 import { v2 as cloudinary } from 'cloudinary';
+import http from 'http';
+import { initSocketServer } from "./socketServer";
 
 dns.setServers(["8.8.8.8"]);
 
 
 
 require('dotenv').config();
-
+const server = http.createServer(app);
 
 // cloudinary config
 cloudinary.config({
@@ -17,7 +19,12 @@ cloudinary.config({
     api_secret: process.env.CLOUD_SECRET_KEY,
 })
 
-app.listen(process.env.PORT, () => {
+
+initSocketServer(server);
+
+
+// create server
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on port: ${process.env.PORT}`);
     connectDB();
 })
