@@ -5,13 +5,19 @@ import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } fro
 import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast';
+import socketIO from 'socket.io-client';
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
+
 
 type Props = {
     setOpen: any;
     data: any;
+    user: any
 }
 
-const CheckOutForm = ({ setOpen, data }: Props) => {
+const CheckOutForm = ({ setOpen, data, user }: Props) => {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -52,16 +58,17 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
         } else {
             setIsLoading(false);
         }
-        //         else if (paymentIntent && paymentIntent.status === "succeeded") {
-        //     setIsLoading(false);
-        //     createOrder({ courseId: data._id, payment_info: paymentIntent })
-        // }
     }
 
 
     useEffect(() => {
         if (orderData) {
             setLoadUser(true);
+            socketId.emit("notification", {
+                title: "New Order",
+                message: `You have a new order from ${data.course.name}`,
+                userId: user._id,
+            })
             redirect(`/course-access/${data._id}`);
         }
         if (error) {

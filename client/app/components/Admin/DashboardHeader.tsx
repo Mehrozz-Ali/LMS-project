@@ -2,6 +2,9 @@
 import { ThemeSwitcher } from "@/app/utils/ThemeSwitcher";
 import React, { FC, useState } from 'react'
 import { IoMdNotificationsOutline } from "react-icons/io";
+import socketIO from 'socket.io-client';
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 
 type Props = {
