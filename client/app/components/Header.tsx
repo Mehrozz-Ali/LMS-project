@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import avatar from '../../public/assests/avatar.jpg';
 import { useSession } from 'next-auth/react';
-import { useSocialAuthMutation } from '@/redux/features/auth/authApi';
+import { useLogOutMutation, useSocialAuthMutation } from '@/redux/features/auth/authApi';
 import toast from 'react-hot-toast';
+import { useLoadUserQuery } from '@/redux/features/api/apiSlice';
 
 
 
@@ -28,22 +29,39 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
     const [active, setActive] = useState(false);
     const [openSidebar, setOpenSidebar] = useState(false);
-    const { user } = useSelector((state: any) => state.auth);
+    // const { user } = useSelector((state: any) => state.auth);
+    const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {});
     const { data } = useSession();
     const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
-    const [logout, setLogout] = useState(false);
+    const [logOut, setLogOut] = useState(false);
+    const [logoutUser] = useLogOutMutation();
+    // const { } = useLogOutQuery(undefined, { skip: !logout ? true : false })
 
 
 
     useEffect(() => {
-        if (!user && data?.user) {
-            socialAuth({
-                email: data?.user?.email,
-                name: data?.user?.name,
-                avatar: data?.user?.image
-            });
+        if (!isLoading) {
+            if (!userData && data) {
+                socialAuth({
+                    email: data?.user?.email,
+                    name: data?.user?.name,
+                    avatar: data?.user?.image
+                });
+                refetch();
+            }
         }
-    }, [data, user, socialAuth])
+        if (data === null) {
+            if (isSuccess) {
+                toast.success("Login Successfully");
+            }
+        }
+        if (data === null && !isLoading && !userData && !logOut) {
+            logoutUser();
+            setLogOut(true);
+        }
+    }, [data, userData, isLoading, isSuccess, error, refetch, socialAuth]);
+
+
 
 
     if (typeof window !== "undefined") {
@@ -64,7 +82,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
         }
     }
 
-    console.log(user);
 
     return (
         <div className="w-full relative">
@@ -88,9 +105,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
                                 <HiOutlineMenuAlt3 size={25} className="cursor-pointer dark:text-white text-black" onClick={() => setOpenSidebar(true)} />
                             </div>
                             {
-                                user ? (
+                                userData ? (
                                     <Link href={"/profile"}>
-                                        <Image src={user.avatar ? user.avatar.url : avatar} alt="" width={30} height={30} className="w-[30px] h-[30px] rounded-full cursor-pointer" style={{ border: activeItem === 5 ? "2px solid #37a39a" : "none" }} />
+                                        <Image src={userData?.user.avatar ? userData.user.avatar.url : avatar} alt="" width={30} height={30} className="w-[30px] h-[30px] rounded-full cursor-pointer" style={{ border: activeItem === 5 ? "2px solid #37a39a" : "none" }} />
                                     </Link>
                                 ) : (
                                     <HiOutlineUserCircle size={25} className="hidden md:block cursor-pointer dark:text-white text-black" onClick={() => setOpen(true)} />
@@ -124,7 +141,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
                     <>
                         {
                             open && (
-                                <CustomeModel open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} component={Login} />
+                                <CustomeModel open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} component={Login} refetch={refetch} />
                             )
                         }
                     </>

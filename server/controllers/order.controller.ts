@@ -3,7 +3,7 @@ import { CatchAsyncError } from '../middleware/catchAsyncErrors';
 import ErrorHandler from '../utilis/ErrorHandler';
 import { IOrder } from '../models/order.model';
 import userModel from '../models/user.model';
-import courseModel from '../models/course.model';
+import courseModel, { ICourse } from '../models/course.model';
 import path from 'path';
 import ejs from 'ejs';
 import sendMail from '../utilis/sendMail';
@@ -44,7 +44,7 @@ export const createOrder = CatchAsyncError(async (req: Request, res: Response, n
         }
 
 
-        const course = await courseModel.findById(courseId);
+        const course: ICourse | null = await courseModel.findById(courseId);
         if (!course) {
             return next(new ErrorHandler("Course not found", 400));
         }
