@@ -63,7 +63,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                         <h5 className="text-center text-[20px] font-Poppins text-black dark:text-white p-3">Notification</h5>
                         {
                             notifications && notifications.map((item: any, index: number) => (
-                                <div className="dark:bg-[#2d3a4ea1] bg-[#00000013] font-Poppins border-b dark:border-b-[#ffffff47] border-b-[#0000000f]">
+                                <div className="dark:bg-[#2d3a4ea1] bg-[#00000013] font-Poppins border-b dark:border-b-[#ffffff47] border-b-[#0000000f]" key={index}>
                                     <div className="w-full flex items-center justify-between p-2">
                                         <p className="text-black dark:text-white">{item.title}</p>
                                         <p className="text-black dark:text-white cursor-pointer"
@@ -77,16 +77,6 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                                 </div>
                             ))
                         }
-
-
-                        {/* <div className="dark:bg-[#3d3a4ea1] bg-[#00000013] font-Poppins border-b dark:border-b-[#ffffff47] border-b-[#0000000f]">
-                            <div className="w-full flex items-center justify-between p-2">
-                                <p className="text-black dark:text-white">New Question Received</p>
-                                <p className="text-black dark:text-white cursor-pointer">Mark as read</p>
-                            </div>
-                            <p className="px-2 text-black dark:text-white">Lorem ipsum dolor sit amet !</p>
-                            <p className="p-2 text-black dark:text-white text-[14px]">5 days ago</p>
-                        </div> */}
                     </div>
                 )
             }

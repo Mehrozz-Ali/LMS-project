@@ -191,7 +191,7 @@ const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo, user, refet
                 activeBar === 1 && (
                     <div>
                         {data[activeVideo]?.links.map((item: any, index: number) => (
-                            <div className="mb-5">
+                            <div className="mb-5" key={index}>
                                 <h2 className="md:text-[20px] md:inline-block dark:text-white text-black">
                                     {item.title && item.title + " :"}
                                 </h2>
@@ -308,7 +308,7 @@ const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo, user, refet
                         <div className="w-full h-[100px] bg-[#ffffff3b]"></div>
                         <div className="w-full">
                             {(course?.reviews && [...course?.reviews].reverse()).map((item: any, index: number) => (
-                                <div className="w-full my-5 dark:text-white text-black">
+                                <div className="w-full my-5 dark:text-white text-black" key={index}>
                                     <div className="w-full flex">
                                         <div>
                                             <Image
@@ -353,7 +353,7 @@ const CourseContentMedia = ({ data, id, activeVideo, setActiveVideo, user, refet
                                     )}
 
                                     {item.commentReplies.map((i: any, index: number) => (
-                                        <div className="w-full flex md:ml-16 my-5">
+                                        <div className="w-full flex md:ml-16 my-5" key={index}>
                                             <div className="w-[50px] h-[50px]">
                                                 <Image
                                                     src={item.user.avatar ? item.user.avatar.url : "../../../public/assests/avatar.jpg"}
@@ -421,7 +421,7 @@ const CommentReply = ({ data, activeVideo, answer, setAnswer, handleAnswerSubmit
 
 
 
-const CommentItem = ({ setQuestionId, item, answer, setAnswer, handleAnswerSubmit, answerCreationLoading }: any) => {
+const CommentItem = ({ questionId, setQuestionId, item, answer, setAnswer, handleAnswerSubmit, answerCreationLoading }: any) => {
     const [replyActive, setReplyActive] = useState(false);
 
     return (
@@ -436,13 +436,6 @@ const CommentItem = ({ setQuestionId, item, answer, setAnswer, handleAnswerSubmi
                             alt="user-avatar"
                             className="w-[50px] h-[50px] rounded-full object-cover"
                         />
-                        {/* <div className="w-[50px] h-[50px]">
-                            <div className="w-[50px] h-[50px] bg-slate-600 rounded-[50px] flex items-center justify-center cursor-pointer">
-                                <h1 className="uppercase text-[18px]">
-                                    {item?.user.name.slice(0, 2)}
-                                </h1>
-                            </div>
-                        </div> */}
                     </div>
                     <div className="pl-3 dark:text-white text-black">
                         <h5 className="text-[20px]">{item?.user.name}</h5>
@@ -459,56 +452,54 @@ const CommentItem = ({ setQuestionId, item, answer, setAnswer, handleAnswerSubmi
                         {item.questionReplies.length}
                     </span>
                 </div>
-                {
-                    replyActive && (
-                        <>
-                            {item.questionReplies.map((item: any, index: number) => (
-                                <div key={index} className="w-full flex md:ml-16 my-5 text-black dark:text-white">
-                                    <div>
-                                        <Image
-                                            src={item.user.avatar ? item.user.avatar.url : "../../../public/assests/avatar.jpg"}
-                                            width={50}
-                                            height={50}
-                                            alt="user-avatar"
-                                            className="w-[50px] h-[50px] rounded-full object-cover"
-                                        />
-                                    </div>
-                                    <div className="pl-3">
-                                        <div className="flex items-center">
-                                            <h5 className="text-[20px]">{item.user.name}</h5>
-                                            {
-                                                item.user.role === "admin" && (
-                                                    <VscVerifiedFilled className="text-[#4a4ada] ml-2 font-[20px]" />
-                                                )
-                                            }
-                                        </div>
-                                        <p>{item.answer}</p>
-                                        <small className="text-[#ffffff83]">{format(item.createdAt)}.</small>
-                                    </div>
-                                </div>
-                            ))}
-                            <>
-                                <div className="w-full flex relative dark:text-white text-black">
-                                    <input type="text"
-                                        placeholder="Enter your answer..."
-                                        value={answer}
-                                        onChange={(e: any) => setAnswer(e.target.value)}
-                                        className={`block md:ml-12 mt-2 outline-none bg-transparent border-b border-[#000000027] dark:text-white dark:border-[#fff] p-[5px] w-[95%] ${answer === "" || answerCreationLoading && 'cursor-not-allowed'}`}
+                {replyActive && questionId === item._id && (
+                    <>
+                        {item.questionReplies.map((item: any) => (
+                            <div className="w-full flex md:ml-16 my-5 text-black dark:text-white" key={item._id}>
+                                <div>
+                                    <Image
+                                        src={item.user.avatar ? item.user.avatar.url : "../../../public/assests/avatar.jpg"}
+                                        width={50}
+                                        height={50}
+                                        alt="user-avatar"
+                                        className="w-[50px] h-[50px] rounded-full object-cover"
                                     />
-                                    <button
-                                        type="submit"
-                                        className="absolute right-0 bottom-1"
-                                        onClick={handleAnswerSubmit}
-                                        disabled={answer === "" || answerCreationLoading}
-                                    >
-                                        Submit
-                                    </button>
                                 </div>
-                                <br />
-                            </>
+                                <div className="pl-3">
+                                    <div className="flex items-center">
+                                        <h5 className="text-[20px]">{item.user.name}</h5>
+                                        {
+                                            item.user.role === "admin" && (
+                                                <VscVerifiedFilled className="text-[#4a4ada] ml-2 font-[20px]" />
+                                            )
+                                        }
+                                    </div>
+                                    <p>{item.answer}</p>
+                                    <small className="text-[#ffffff83]">{format(item.createdAt)}.</small>
+                                </div>
+                            </div>
+                        ))}
+                        <>
+                            <div className="w-full flex relative dark:text-white text-black">
+                                <input type="text"
+                                    placeholder="Enter your answer..."
+                                    value={answer}
+                                    onChange={(e: any) => setAnswer(e.target.value)}
+                                    className={`block md:ml-12 mt-2 outline-none bg-transparent border-b border-[#000000027] dark:text-white dark:border-[#fff] p-[5px] w-[95%] ${answer === "" || answerCreationLoading && 'cursor-not-allowed'}`}
+                                />
+                                <button
+                                    type="submit"
+                                    className="absolute right-0 bottom-1"
+                                    onClick={handleAnswerSubmit}
+                                    disabled={answer === "" || answerCreationLoading}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                            <br />
                         </>
-                    )
-                }
+                    </>
+                )}
             </div>
         </>
     )

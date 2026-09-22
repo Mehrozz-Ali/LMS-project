@@ -158,7 +158,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, setRoute, setOpen: o
                                         </div>
 
                                         {item.commentReplies.map((i: any, index: number) => (
-                                            <div className="w-full flex md:ml-16 my-5">
+                                            <div className="w-full flex md:ml-16 my-5"  key={index}>
                                                 <div className="w-[50px] h-[50px]">
                                                     <Image
                                                         src={i.user.avatar ? i.user.avatar.url : "../../../public/assests/avatar.jpg"}

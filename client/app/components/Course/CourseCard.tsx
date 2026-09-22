@@ -6,7 +6,7 @@ import { AiOutlineUnorderedList } from 'react-icons/ai'
 
 type Props = {
     item: any,
-    user: any,
+    user?: any,
     isProfile?: boolean
 }
 

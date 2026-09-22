@@ -12,7 +12,7 @@ import Footer from '../components/Footer';
 
 type Props = {}
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
 
     const searchParams = useSearchParams();
     const search = searchParams?.get("title");
@@ -103,4 +103,4 @@ const page = (props: Props) => {
     )
 }
 
-export default page
+export default Page

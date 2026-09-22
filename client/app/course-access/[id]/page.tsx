@@ -10,7 +10,7 @@ type Props = {
     params: Promise<{ id: string }>;
 }
 
-const page = ({ params }: Props) => {
+const Page = ({ params }: Props) => {
     const { id } = use(params);
     const { isLoading, error, data } = useLoadUserQuery(undefined, {});
 
@@ -43,4 +43,4 @@ const page = ({ params }: Props) => {
     )
 }
 
-export default page
+export default Page
