@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
         "target": "ES2022",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "outDir": "./dist",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "./build",
         "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
@@ -15,6 +15,6 @@
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "build"
     ]
 }
