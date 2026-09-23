@@ -27,7 +27,7 @@ export const uploadCourse = CatchAsyncError(async (req: Request, res: Response, 
 
             data.thumbnail = {
                 public_id: myCloud.public_id,
-                url: myCloud.secret_url,
+                url: myCloud.secure_url,
             }
         }
 
