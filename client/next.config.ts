@@ -25,10 +25,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    reactRoot: "true",
-    suppressHydrationWarning: true,
-  }
 };
 
 export default nextConfig;
