@@ -168,15 +168,17 @@ export const logoutUser = CatchAsyncError(async (req: Request, res: Response, ne
 
         res.clearCookie("access_token", {
             httpOnly: true,
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+            secure: true,
+            // secure: process.env.NODE_ENV === "production",
             path: "/",
         });
 
         res.clearCookie("refresh_token", {
             httpOnly: true,
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+            secure: true,
+            // secure: process.env.NODE_ENV === "production",
             path: "/",
         });
 
