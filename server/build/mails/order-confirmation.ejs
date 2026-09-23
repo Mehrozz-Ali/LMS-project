@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmation</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            padding: 40px 15px;
+            background-color: #f4f6f8;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            background-color: #2563eb;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            color: #dbeafe;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 40px 30px;
+            color: #374151;
+        }
+
+        .content h2 {
+            margin: 0 0 15px;
+            color: #111827;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .description {
+            margin: 0 0 25px;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .order-details {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            border-spacing: 0;
+        }
+
+        .order-item {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            margin: 0 0 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .value {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .price {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .access-text {
+            margin: 30px 0 0;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #2563eb;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .footer {
+            padding: 25px 20px;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .footer-text {
+            margin: 0 0 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .small-text {
+            margin: 0;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-wrapper {
+                padding: 20px 10px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .content h2 {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <table class="email-wrapper" role="presentation" cellpadding="0" cellspacing="0">
+
+        <tr>
+            <td class="text-center">
+
+                <table class="email-container" role="presentation" cellpadding="0" cellspacing="0">
+
+                    <!-- Header -->
+                    <tr>
+                        <td class="header">
+
+                            <h1>Order Confirmed</h1>
+
+                            <p>
+                                Thank you for your purchase
+                            </p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td class="content">
+
+                            <h2>Your purchase was successful</h2>
+
+                            <p class="description">
+                                Thank you for your order. Your payment has been
+                                successfully processed, and your course is now
+                                available in your account.
+                            </p>
+
+                            <!-- Order Details -->
+                            <table class="order-details" role="presentation" cellpadding="0" cellspacing="0">
+
+                                <!-- Order ID -->
+                                <tr>
+                                    <td class="order-item">
+
+                                        <p class="label">
+                                            Order ID
+                                        </p>
+
+                                        <p class="value">
+                                            #<%= order._id %>
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Course -->
+                                <tr>
+                                    <td class="order-item">
+
+                                        <p class="label">
+                                            Course
+                                        </p>
+
+                                        <p class="value">
+                                            <%= order.name %>
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Price -->
+                                <tr>
+                                    <td class="order-item">
+
+                                        <p class="label">
+                                            Amount Paid
+                                        </p>
+
+                                        <p class="price">
+                                            $<%= order.price %>
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Date -->
+                                <tr>
+                                    <td class="order-item">
+
+                                        <p class="label">
+                                            Purchase Date
+                                        </p>
+
+                                        <p class="value">
+                                            <%= order.date %>
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <p class="access-text">
+                                You can now log in to your account and start
+                                learning. All purchased course content is
+                                available from your courses section.
+                            </p>
+
+                            <!-- Button -->
+                            <div class="button-container">
+
+                                <a href="#" class="button">
+                                    Access Your Course
+                                </a>
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+
+                            <p class="footer-text">
+                                Thank you for choosing our learning platform.
+                            </p>
+
+                            <p class="small-text">
+                                If you have any questions, please contact our
+                                support team.
+                            </p>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+
+    </table>
+
+</body>
+
+</html>
