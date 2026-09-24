@@ -24,8 +24,10 @@ const Profile: FC<Props> = ({ user }) => {
 
     const logOutHandler = async () => {
         setLogout(true);
-        await useLogOutMutation();
-        await signOut();
+        await logOutMutation();
+        // await signOut();
+        window.location.href = "/";
+
     };
 
 
