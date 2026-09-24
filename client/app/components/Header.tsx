@@ -85,8 +85,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
 
     return (
         <div className="w-full relative">
-            <div className={`${active ? "dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-black fixed top-0 left-0 w-full h-[80px] z-[80] border-b  dark:border-[#ffffff1c] shadow-xl transition duration-500" : "w-full border-b dark:border-[#ffffff1c] h-[80px] z-[80] dark:shadow"}`}>
-
+            {/* <div className={`${active ? "dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-black fixed top-0 left-0 w-full h-[80px] z-[80] border-b  dark:border-[#ffffff1c] shadow-xl transition duration-500" : "w-full border-b dark:border-[#ffffff1c] h-[80px] z-[80] dark:shadow"}`}> */}
+            <div className={`${active ? "bg-white dark:bg-gray-900 fixed top-0 left-0 w-full h-[80px] z-[80] border-b dark:border-[#ffffff1c] shadow-xl transition duration-500" : "w-full bg-white dark:bg-gray-900 border-b dark:border-[#ffffff1c] h-[80px] z-[80] shadow-sm"}`}>
                 <div className="w-[95%] md:w-[92%] m-auto py-2 h-full ">
                     <div className="w-full h-[80px] flex items-center justify-between p-3">
                         <div>
@@ -130,7 +130,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, setRoute, route, open }) => {
                                             <Image src={userData?.user.avatar ? userData.user.avatar.url : avatar} alt="" width={30} height={30} className="w-[30px] h-[30px] ml-[20px] rounded-full cursor-pointer" style={{ border: activeItem === 5 ? "2px solid #37a39a" : "none" }} />
                                         </Link>
                                     ) : (
-                                        <HiOutlineUserCircle size={25} className="hidden md:block cursor-pointer dark:text-white text-black" onClick={() => setOpen(true)} />
+                                        // <HiOutlineUserCircle size={25} className="hidden md:block cursor-pointer dark:text-white text-black" onClick={() => setOpen(true)} />
+                                        <HiOutlineUserCircle size={25} className="ml-[20px] my-2 cursor-pointer dark:text-white text-black" onClick={() => setOpen(true)} />
                                     )
                                 }
                                 <br />
