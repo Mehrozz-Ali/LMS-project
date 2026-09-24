@@ -7,6 +7,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { styles } from '../../../app/styles/style';
 import { useRegisterMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { userRegistration } from '@/redux/features/auth/authSlice';
 
 type Props = {
     setRoute: (route: string) => void;
@@ -21,11 +23,13 @@ const schema = Yup.object().shape({
 const SignUp: FC<Props> = ({ setRoute }) => {
     const [show, setShow] = useState(false);
     const [register, { data, error, isSuccess }] = useRegisterMutation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (isSuccess) {
             const message = data?.message || "Registration successful!";
             toast.success(message);
+            dispatch(userRegistration({ token: data?.activationToken }));
             setRoute("Verification");
         }
         if (error) {

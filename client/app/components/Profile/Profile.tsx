@@ -17,7 +17,7 @@ const Profile: FC<Props> = ({ user }) => {
     const [avatar, setAvatar] = useState<string | null>(null);
     const [logOut, setLogout] = useState(false);
     const [active, setActive] = useState(1);
-    // const [logOut, { isLoading }] = useLogOutMutation();
+    const [logOutMutation] = useLogOutMutation(); // this line  
     const [courses, setCourses] = useState([]);
     const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
 
