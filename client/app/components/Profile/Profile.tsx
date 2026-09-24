@@ -8,6 +8,8 @@ import ChangePassword from './ChangePassword'
 import CourseCard from '../Course/CourseCard';
 import { useGetUsersAllCoursesQuery } from '@/redux/features/courses/coursesApi';
 
+
+
 type Props = {
     user: any
 }
@@ -25,7 +27,11 @@ const Profile: FC<Props> = ({ user }) => {
     const logOutHandler = async () => {
         setLogout(true);
         await logOutMutation();
-        // await signOut();
+        try {
+            await signOut({ redirect: false });
+        } catch (e) {
+            console.error("NextAuth signOut error (ignored, cookies likely still cleared):", e);
+        }
         window.location.href = "/";
 
     };
